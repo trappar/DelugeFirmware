@@ -1,3 +1,5 @@
+from dbt.util import vcheck
+
 Import("env")
 
 # Happy little custom builders and their actions.
@@ -37,13 +39,27 @@ env.Append(
 )
 
 # Defining the ...COMSTR variables suppresses seeing the build commands raw.
-# Just comment these out if you hate things being hidden from you.
-env["CCCOMSTR"] = "Compiling static object $TARGET"
-env["CXXCOMSTR"] = "Compiling static object $TARGET"
-env["ASPPCOMSTR"] = "Assembling $TARGET"
-env["LINKCOMSTR"] = "Linking $TARGET"
-env["BINCOMSTR"] = "Converting .elf to .bin."
-env["HEXCOMSTR"] = "Converting .elf to .hex."
-env["SIZECOMSTR"] = "Saving .elf size information to .siz."
-env["TOUCHCOMSTR"] = "Encouraging $TARGET"
-env["FAKEDIRCOMSTR"] = "Giving moral support to directories."
+# These will be replaced with the actual commands used if --verbose == 3 or --spew
+if vcheck() < 3:
+    if GetOption("no_exec"):
+        env["CCCOMSTR"] = "Simulating compile of static object $TARGET"
+        env["CXXCOMSTR"] = "Simulating compile of static object $TARGET"
+        env["ASCOMSTR"] = "Pretending to assemble $TARGET"
+        env["ASPPCOMSTR"] = "Pretending to assemble $TARGET"
+        env["LINKCOMSTR"] = "Make-believe linking $TARGET"
+        env["BINCOMSTR"] = "LARPing a conversion of .elf to .bin."
+        env["HEXCOMSTR"] = "Role playing a conversion of .elf to .hex."
+        env["SIZECOMSTR"] = "Lying about saving .elf size information to .siz."
+        env["TOUCHCOMSTR"] = "Encouraging $TARGET in theory"
+        env["FAKEDIRCOMSTR"] = "Giving moral support to directories."
+    else:
+        env["CCCOMSTR"] = "Compiling static object $TARGET"
+        env["CXXCOMSTR"] = "Compiling static object $TARGET"
+        env["ASCOMSTR"] = "Assembling $TARGET"
+        env["ASPPCOMSTR"] = "Assembling $TARGET"
+        env["LINKCOMSTR"] = "Linking $TARGET"
+        env["BINCOMSTR"] = "Converting .elf to .bin."
+        env["HEXCOMSTR"] = "Converting .elf to .hex."
+        env["SIZECOMSTR"] = "Saving .elf size information to .siz."
+        env["TOUCHCOMSTR"] = "Encouraging $TARGET"
+        env["FAKEDIRCOMSTR"] = "Giving moral support to directories."

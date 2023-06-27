@@ -1,8 +1,3 @@
-Import("log_parent")
-log = log_parent.getChild("commandline")
-
-log.debug("Adding commandline options.")
-
 AddOption(
     "--base_config",
     dest="base_config",
@@ -22,6 +17,50 @@ AddOption(
     action="store",
     metavar="TARGET",
     help='Legacy single-target e2 option; target prefaced with "dbt-" instead of "e2-"',
+)
+
+AddOption(
+    "--e2_orig_prefix",
+    dest="e2_orig_prefix",
+    action="store_true",
+    help='Override the "dbt-" build prefix and force "e2-" directory prefixes instead',
+)
+
+AddOption(
+    "--nowo",
+    "--no-owo",
+    "--no-uwu",
+    dest="no_progress",
+    action="store_true",
+    help="Suppress the cute UwU/uwu/owo progress indicator and make it sad ;_;",
+)
+
+AddOption(
+    "--only_prepare",
+    dest="only_prepare",
+    action="store_true",
+    help="For the given build targets, only prepare for building; do not actually "
+    "build objects or binaries. Please put this in your workflow before building using an "
+    "external tool.",
+)
+
+AddOption(
+    "--spew",
+    dest="spew",
+    action="store_true",
+    help="Shortcut for the most verbose output. Also disables the progress indicator, for "
+    "clean logging.",
+)
+
+AddOption(
+    "--verbose",
+    dest="verbosity",
+    default=1,
+    action="store",
+    type=int,
+    metavar="LEVEL",
+    help="Level of noise DBT should make: 0 sets the --silent/--quiet flag and suppresses "
+    "whatever we can; 1 is the default; 2 enables build command output; 3 is equivalent to --spew.",
 )
 
 # TODO: allow a default compile_commands.json to be symlinked as part of the build if specified.

@@ -15,6 +15,7 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include "DBT.h"
 #include <AudioEngine.h>
 #include <InstrumentClip.h>
 #include <InstrumentClipMinder.h>
@@ -2247,7 +2248,7 @@ public:
 // Colours submenu
 MenuItemSubmenu coloursSubmenu;
 
-char const* firmwareString = "4.1.4-alpha3";
+char const* firmwareString = DBT_FW_VERSION_STRING;
 
 // this class is haunted for some reason, clang-format mangles it
 // clang-format off
