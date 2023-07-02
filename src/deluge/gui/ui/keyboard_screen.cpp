@@ -42,6 +42,7 @@
 #include "gui/views/session_view.h"
 #include "gui/ui_timer_manager.h"
 #include "hid/display/oled.h"
+#include "model/settings/runtime_feature_settings.h"
 
 KeyboardScreen keyboardScreen{};
 
@@ -411,14 +412,18 @@ void KeyboardScreen::selectEncoderAction(int8_t offset) {
 int KeyboardScreen::getNoteCodeFromCoords(int x, int y) {
 
 	Instrument* instrument = (Instrument*)currentSong->currentClip->output;
-	if (instrument->type == INSTRUMENT_TYPE_KIT) { //
-
+	if (instrument->type == INSTRUMENT_TYPE_KIT) {
 		return 60 + (int)(x / 4) + (int)(y / 4) * 4;
 	}
-	else {
-		InstrumentClip* clip = getCurrentClip();
-		return clip->yScrollKeyboardScreen + x + y * clip->keyboardRowInterval;
+
+	InstrumentClip* clip = getCurrentClip();
+	int noteCode = clip->yScrollKeyboardScreen + x + y * clip->keyboardRowInterval;
+
+	if (clip->inScaleMode && runtimeFeatureSettings.get(RuntimeFeatureSettingType::ScaleMode) == RuntimeFeatureStateScaleMode::ScaleOnly) {
+		return currentSong->getYNoteFromYVisual(noteCode, true);
 	}
+
+	return noteCode;
 }
 
 void KeyboardScreen::exitAuditionMode() {

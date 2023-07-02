@@ -27,6 +27,7 @@
 
 // State declarations
 enum RuntimeFeatureStateToggle : uint32_t { Off = 0, On = 1 };
+enum RuntimeFeatureStateScaleMode : uint32_t { Chromatic = 0, ScaleOnly = 1 };
 
 // Declare additional enums for specific multi state settings (e.g. like RuntimeFeatureStateTrackLaunchStyle)
 
@@ -34,6 +35,7 @@ enum RuntimeFeatureStateToggle : uint32_t { Off = 0, On = 1 };
 enum RuntimeFeatureSettingType : uint32_t {
 	// FileFolderSorting // @TODO: Replace with actual identifier on first use
 	DrumRandomizer,
+	ScaleMode,
 	MaxElement // Keep as boundary
 };
 
@@ -88,6 +90,14 @@ protected:
 	         .options = {{.displayName = "Off", .value = RuntimeFeatureStateToggle::Off},
 	                     {.displayName = "On", .value = RuntimeFeatureStateToggle::On},
 	                     {.displayName = NULL, .value = 0}}},
+
+		[RuntimeFeatureSettingType::ScaleMode] =
+			{.displayName = "Scale Mode",
+			 .xmlName = "scaleMode",
+			 .value = 0, // Default value
+			 .options = {{.displayName = "Chromatic", .value = RuntimeFeatureStateScaleMode::Chromatic},
+						 {.displayName = "Scale Only", .value = RuntimeFeatureStateScaleMode::ScaleOnly},
+						 {.displayName = NULL, .value = 0}}}
 	};
 
 private:
